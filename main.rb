@@ -5,6 +5,8 @@ require 'ohm-zset'
 
 require 'tilt/haml'
 
+enable :sessions
+
 # Set port
 set :port, 2352
 
@@ -13,7 +15,7 @@ Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require fi
 
 
 before do
-  @user = User[params[:user_id]] || User[1]
+  @user = User[params[:user_id]] || User[session[:user_id]] 
 end
 
 get '/' do
@@ -34,7 +36,7 @@ get '/admin_list/sort/:order' do
   @posts = Post.all
 
   order = params[:order] == "desc" ? "DESC" : "ASC"
-  
+
   @posts = @posts.sort_by(:created_at, order: order)
 
   haml :admin
@@ -44,6 +46,8 @@ end
 get '/:user_id' do
   @user = User[params[:user_id]]
   @posts = @user.posts
+
+  session['user_id'] = params[:user_id]
 
   haml :'users/show'
 end
@@ -90,8 +94,7 @@ post '/posts' do
 end
 
 get '/posts/new' do
-  @user = User[1]
-
+  @user = User[session['user_id']]
   haml :'posts/new'
 end
 
@@ -151,6 +154,7 @@ end
 
 def initialize_database!
   User.create(name: 'Adelen', email_address: 'festinadelen@gmail.com') unless User[1]
+  User.create(name: 'Victoria', email_address: 'festinadelen@gmail.com') unless User[2]
 end
 
 
