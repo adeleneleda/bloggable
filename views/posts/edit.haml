@@ -1,0 +1,7 @@
+Edit post
+%form{method: 'post', action: "/posts/#{ @post.id }"}
+  Title:
+  %input{type: 'text', name: 'title', value: @post.title}
+  Content:
+  %input{type: 'text', name: 'content', value: @post.content}
+  %input{type: 'submit', value: 'Publish'}

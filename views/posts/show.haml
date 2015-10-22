@@ -3,14 +3,22 @@
   = @post.content
   = @post.date_created
   = @post.date_modified
+  = @post.image
 
+  %img{src: "#{ @post.image }"}
+
+%br
+%br
 .div
   Comments:
   = @post.comments.each do |comment|
-    = comment.comment
-    = comment.name
-    = comment.email_address
+    .div
+      = comment.comment
+      = comment.name
+      = comment.email_address
 
+%br
+%br
 .div
   Add comment:
   %form{method: 'post', action: "/posts/#{ @post.id }/comments"}
@@ -21,3 +29,9 @@
     Comment:
     %input{type: 'text', name: 'comment'}
     %input{type: 'submit', value: 'Submit'}
+
+%br
+%br
+%a{href: "/posts/#{ @post.id }/edit"} Edit Post
+%br
+rveervfgbtege

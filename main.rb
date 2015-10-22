@@ -48,7 +48,6 @@ get '/' do
 
 end
 
-
 get '/:user_id' do
   @user = User[params[:user_id]]
   puts params
@@ -59,13 +58,44 @@ post '/posts' do
   title, content = params[:title], params[:content]
   user_id = params[:user_id]
 
-  @post = Post.create(title: title, 
-                      content: content, 
-                      user: User[user_id],
-                      date_created: Time.now)
+  puts '-'*100
+  puts params
+  puts '-'*100
+
+  
 
 
-  redirect "/posts/#{ @post.id }"
+  post = Post.create(title: title, 
+                     content: content, 
+                     user: User[user_id],
+                     date_created: Time.now)
+
+
+
+  if params[:image]
+    dir = "public/uploads/#{ post.id }/images"
+    FileUtils.mkdir_p(dir) unless File.exist?(dir)
+
+    filename = "#{ dir }/" + params[:image][:filename]
+    File.open("#{ filename }", "w+") do |f|
+      f.write(params[:image][:tempfile].read)
+    end
+
+
+    @fullpath = File.expand_path(filename)
+
+    puts '-'*100
+    puts filename
+    puts @fullpath
+    puts '-'*100
+
+    post.update(image: "/" + filename.sub('public/', ''))
+  end
+
+  
+
+
+  redirect "/posts/#{ post.id }"
 end
 
 get '/posts/new' do
@@ -80,6 +110,24 @@ get '/posts/:post_id' do
   haml :'posts/show'
 end
 
+get '/posts/:post_id/edit' do
+  @post = Post[params[:post_id]]
+
+  haml :'posts/edit'
+end
+
+post '/posts/:post_id' do
+  title, content = params[:title], params[:content]
+  
+  @post = Post[params[:post_id]]
+
+  @post.update(title: title, 
+              content: content, 
+              date_modified: Time.now)
+
+  redirect "/posts/#{ @post.id }"
+end
+
 post '/posts/:post_id/comments' do
   post = Post[params[:post_id]]
   name, email_address = params[:name], params[:email_address]
@@ -92,6 +140,14 @@ post '/posts/:post_id/comments' do
 
   redirect "/posts/#{ post.id }"
 end
+
+
+# get '/uploads/:post_id/images/:image_file' do
+#   filename = "public/uploads/#{ params[:post_id] }/images/#{ params[:image_file] }"
+#   puts 'ggg'*100
+#   puts filename
+#   send_file(filename, :type => 'image/png', :disposition => 'inline')
+# end
 
 
 
