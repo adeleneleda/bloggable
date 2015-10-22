@@ -1,0 +1,15 @@
+.panel-.panel-default
+  .panel-body
+    %h3 All Posts by All Users
+    %table.table.table-bordered.text-center
+      %tr
+        %th.text-center Title
+        %th.text-center Author
+        %th.text-center Posted On
+      - @posts.each do |post|
+        %tr
+          %td
+            %a{href: "/posts/#{ post.id }"}= post.title
+          %td= post.user.name
+          %td= date_format post.date_created
+

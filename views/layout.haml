@@ -15,21 +15,40 @@
               Bloggable
 
     .container
-      .col-md-3{ style: "position:fixed" }
-        .panel.panel-default
-          .panel-body.text-center
-            .circular
-            = @user.name
-            %br
-            %em
-              = @user.email_address
-          .panel-footer.text-center
-            %a{href: '/posts/new'} Create New Post
-          .panel-footer.text-center
-            %a{href: '/'} View All Posts
-          .panel-footer.text-center
-            %a{href: "/#{ @user.id }/sort/asc"} ASC
-            |
-            %a{href: "/#{ @user.id }/sort/desc"} DESC
-      .col-md-9.col-md-offset-3
-        = yield
+      - if @admin_mode
+        .col-md-3{ style: "position:fixed" }
+          .panel.panel-default
+            .panel-body.text-center
+              .circular
+              = @user.name
+              %br
+              %em
+                = @user.email_address
+            .panel-footer.text-center
+              %a{href: '/'} Back to My Page
+            .panel-footer.text-center
+              %a{href: "/admin_list/sort/asc"} ASC
+              |
+              %a{href: "/admin_list/sort/desc"} DESC
+        .col-md-9.col-md-offset-3
+          = yield
+
+      - else
+        .col-md-3{ style: "position:fixed" }
+          .panel.panel-default
+            .panel-body.text-center
+              .circular
+              = @user.name
+              %br
+              %em
+                = @user.email_address
+            .panel-footer.text-center
+              %a{href: '/posts/new'} Create New Post
+            .panel-footer.text-center
+              %a{href: '/'} View All Posts
+            .panel-footer.text-center
+              %a{href: "/#{ @user.id }/sort/asc"} ASC
+              |
+              %a{href: "/#{ @user.id }/sort/desc"} DESC
+        .col-md-9.col-md-offset-3
+          = yield
