@@ -55,20 +55,44 @@ get '/:user_id' do
   haml :'users/show'
 end
 
+post '/posts' do
+  title, content = params[:title], params[:content]
+  user_id = params[:user_id]
+
+  @post = Post.create(title: title, 
+                      content: content, 
+                      user: User[user_id],
+                      date_created: Time.now)
+
+
+  redirect "/posts/#{ @post.id }"
+end
+
 get '/posts/new' do
-  puts 'fffff'*100
+  @user = User[1]
+
   haml :'posts/new'
 end
 
 get '/posts/:post_id' do
+  @post = Post[params[:post_id]]
+
   haml :'posts/show'
 end
 
+post '/posts/:post_id/comments' do
+  post = Post[params[:post_id]]
+  name, email_address = params[:name], params[:email_address]
+  comment = params[:comment]
 
+  Comment.create(post: post,
+                 name: name, 
+                 email_address: email_address, 
+                 comment: comment)
 
-post '/posts' do
-
+  redirect "/posts/#{ post.id }"
 end
+
 
 
 
