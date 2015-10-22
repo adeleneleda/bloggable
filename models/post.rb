@@ -11,5 +11,5 @@ class Post < Ohm::Model
   reference :user, :User
   collection :comments, :Comment
 
-  index :title
+  index :date_created
 end
