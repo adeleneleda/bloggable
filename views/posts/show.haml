@@ -9,32 +9,31 @@
         .content
           = @post.content.gsub(/\n/, '<br/>')
         
-      %hr
 
       .post-footer
-        .row
-          .col-md-10.text-left
+        .row.small
+          .col-md-10.text-left.text-muted
             Created at
-            = @post.date_created
+            = "#{ date_format @post.date_created}."
             - if @post.date_modified
-              \. Modified at
-              = @post.date_modified
+              Modified at
+              = date_format @post.date_modified
           .col-md-2.text-right
             %a{href: "/posts/#{ @post.id }/edit"} Edit Post
 
-    %hr
+    - if @post.comments.size > 0
+      .div
+        %h5
+          = "#{ simple_pluralize(@post.comments.size, 'Thought') } on #{ @post.title }:"
 
-    .div
-      %h4 Thoughts on #{ @post.title }:
-      = @post.comments.each do |comment|
-        .comment
-          = comment.comment
-          .comment-footer
-            = "#{ comment.name } (#{ comment.email_address })"
-        %hr
-
-    %br
-
+        = @post.comments.each do |comment|
+          .comment
+            = comment.comment
+            %br
+            %i.fa.fa-comments-o
+            %small.comment-footer.text-muted
+              = "- #{ comment.name } (#{ comment.email_address }) at #{ date_format comment.date_created }"
+          %hr
     .div
       %form{method: 'post', action: "/posts/#{ @post.id }/comments"}
         .row
