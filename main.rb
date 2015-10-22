@@ -30,7 +30,14 @@ end
 
 get '/:user_id/sort/:order' do
   @user = User[params[:user_id]]
-  @posts = @user.posts
+
+  order = params[:order] == "desc" ? "DESC" : "ASC"
+
+  puts order
+
+  @posts = @user.posts.sort_by(:created_at, order: order)
+
+  puts @posts.map(&:title)
   
   haml :'users/show'
 end
@@ -102,19 +109,25 @@ post '/posts/:post_id/comments' do
   Comment.create(post: post,
                  name: name, 
                  email_address: email_address, 
-                 comment: comment)
+                 comment: comment,
+                 date_created: Time.now)
 
   redirect "/posts/#{ post.id }"
 end
 
+helpers do
+  def date_format(time_str)
+    Time.parse(time_str).strftime('%B %d, %Y %I:%M %P')
+  end
 
-# get '/uploads/:post_id/images/:image_file' do
-#   filename = "public/uploads/#{ params[:post_id] }/images/#{ params[:image_file] }"
-#   puts 'ggg'*100
-#   puts filename
-#   send_file(filename, :type => 'image/png', :disposition => 'inline')
-# end
-
+  def simple_pluralize(count, word)
+    if count == 1
+      "#{ count } #{ word }"
+    else
+      "#{ count } #{ word }s"
+    end
+  end
+end
 
 
 
