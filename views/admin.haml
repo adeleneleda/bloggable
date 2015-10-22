@@ -10,6 +10,7 @@
         %tr
           %td
             %a{href: "/posts/#{ post.id }"}= post.title
-          %td= post.user.name
+          %td
+            %a{href: "/#{ post.user.id }"}= post.user.name
           %td= date_format post.date_created
 
