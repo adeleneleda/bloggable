@@ -1,9 +1,17 @@
-Write post
-%form{method: 'post', action: '/posts', enctype: 'multipart/form-data'}
-  Title:
-  %input{type: 'text', name: 'title'}
-  Content:
-  %input{type: 'text', name: 'content'}
-  %input{type: 'hidden', name: 'user_id', value: @user.id}
-  %input{type: 'file', name: 'image'}
-  %input{type: 'submit', value: 'Publish'}
+.panel.panel-default
+  .panel-heading
+    .panel-title Write Post
+  .panel-body
+    %form{method: 'post', action: "/posts", enctype: 'multipart/form-data'}
+      %input{type: 'hidden', name: 'user_id', value: @user.id}
+      .form-group
+        %label Title:
+        %input.form-control{type: 'text', name: 'title'}
+      .form-group
+        %label Content:
+        %textarea.form-control{type: 'text', name: 'content', rows: 10}
+      .form-group
+        %input.btn{type: 'file', name: 'image'}
+      .form-group 
+        %input.btn.btn-default.pull-right{type: 'submit', value: 'Publish'}
+

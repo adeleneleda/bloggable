@@ -1,0 +1,27 @@
+%html
+  %head
+    %title Bloggable
+
+    %link{rel: "stylesheet", href: "/css/bootstrap.min.css"}
+    %link{rel: "stylesheet", href: "/css/components.css"}
+  %body{style: 'padding-top: 70px;'}
+    %nav.navbar.navbar-default.navbar-fixed-top
+      .container
+        .navbar-header
+          .navbar-brand Bloggable
+
+    .container
+      .col-md-3{ style: "position:fixed" }
+        .panel.panel-default
+          .panel-body.text-center
+            .circular
+            = @user.name
+            %br
+            %em
+              = @user.email_address
+          .panel-footer.text-center
+            %a{href: '/posts/new'} Create New Post
+          .panel-footer.text-center
+            %a{href: '/'} View All Posts
+      .col-md-9.col-md-offset-3
+        = yield

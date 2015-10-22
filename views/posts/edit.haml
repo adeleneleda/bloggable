@@ -1,7 +1,14 @@
-Edit post
-%form{method: 'post', action: "/posts/#{ @post.id }"}
-  Title:
-  %input{type: 'text', name: 'title', value: @post.title}
-  Content:
-  %input{type: 'text', name: 'content', value: @post.content}
-  %input{type: 'submit', value: 'Publish'}
+.panel.panel-default
+  .panel-heading
+    .panel-title Edit Post
+  .panel-body
+    %form{method: 'post', action: "/posts/#{ @post.id }"}
+      .form-group
+        %label Title:
+        %input.form-control{type: 'text', name: 'title', value: @post.title}
+      .form-group
+        %label Content:
+        %textarea.form-control{type: 'text', name: 'content', rows: 10}= @post.content
+      .form-group 
+        %input.btn.btn-default.pull-right{type: 'submit', value: 'Publish'}
+
