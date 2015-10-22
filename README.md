@@ -1,2 +1,2 @@
-# blogable
-BLogsite using Ruby, Sinatra, and Redis
+# Bloggable
+Blogsite using Ruby, Sinatra, and Redis
