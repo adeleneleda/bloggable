@@ -17,4 +17,47 @@
   margin-right: auto;
   width: 60%;
   height: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.text-muted {
+  color: #8C8C8C;
+}
+
+.xsmall {
+  font-size: 60%;
+  font-style: italic;
+}
+
+.small {
+  font-size: 10px;
+  font-style: italic;
+}
+
+.pt5 {
+  padding-top: 5px;
+}
+
+.ml20 {
+  margin-left: 20px;
+}
+
+.post-footer {
+  padding: 10px;
+  margin: 15px 0px;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: #CCCCCC;
+}
+
+#logo {
+  font-family: 'Kaushan Script', cursive;
+  color: 'FFF' !important;
+  font-weight: 'bold';
+  font-size: 28px;
+}
+
+body {
+  font-size: 12px;
 }
