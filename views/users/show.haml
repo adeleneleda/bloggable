@@ -18,5 +18,10 @@
                 Posted at:
                 = date_format(post.date_created)
 
-    .panel-body= post.content.gsub(/\n/, '<br/>')
+    .panel-body
+      = post.content[0..450].gsub(/\n/, '<br/>')
+      - if post.content.length > 450
+        \...
+        %span.ml20.italic
+          %a{href: "/posts/#{ post.id }"} Continue reading &gt;&gt;
 
