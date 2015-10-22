@@ -21,6 +21,26 @@ get '/' do
   # haml :index
 end
 
+
+get '/admin_list' do
+  @admin_mode = true
+  @posts = Post.all
+
+  haml :admin
+end
+
+get '/admin_list/sort/:order' do
+  @admin_mode = true
+  @posts = Post.all
+
+  order = params[:order] == "desc" ? "DESC" : "ASC"
+  
+  @posts = @posts.sort_by(:created_at, order: order)
+
+  haml :admin
+end
+
+
 get '/:user_id' do
   @user = User[params[:user_id]]
   @posts = @user.posts
@@ -32,8 +52,6 @@ get '/:user_id/sort/:order' do
   @user = User[params[:user_id]]
 
   order = params[:order] == "desc" ? "DESC" : "ASC"
-
-  puts order
 
   @posts = @user.posts.sort_by(:created_at, order: order)
 
