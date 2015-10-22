@@ -9,6 +9,14 @@
   .panel.panel-default
     .panel-heading
       .panel-title
-        %a{href: "/posts/#{ post.id }"}= post.title
+        .row
+          .col-md-6.text-left
+            %a{href: "/posts/#{ post.id }"}= post.title
+          .col-md-6.text-right.pt5
+            %span.text-muted.xsmall
+              %em
+                Posted at:
+                = date_format(post.date_created)
+
     .panel-body= post.content.gsub(/\n/, '<br/>')
 
