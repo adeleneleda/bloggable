@@ -1,69 +1,43 @@
 require 'rubygems'
 require 'sinatra'
 require 'ohm'
+require 'ohm-zset'
 
 require 'tilt/haml'
 
+# Set port
 set :port, 2352
 
-class Post < Ohm::Model
-  attribute :title
-  attribute :image
-  attribute :content
-  attribute :date_created
-  attribute :date_modified
+# Load models
+Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
 
-  reference :user, :Author
-  collection :comments, :Comment
 
-  index :title
+before do
+  @user = User[params[:user_id]] || User[1]
 end
-
-
-class Comment < Ohm::Model
-  attribute :name
-  attribute :email_address
-  attribute :comment
-
-  reference :post, :Post
-  reference :user, :User
-end
-
-
-class User < Ohm::Model
-  attribute :name
-  attribute :email_address
-  attribute :description
-
-  collection :posts, :Post
-  collection :comments, :Comment
-end
-
-
 
 get '/' do
-
   redirect '/1'
   # haml :index
-
 end
 
 get '/:user_id' do
   @user = User[params[:user_id]]
-  puts params
+  @posts = @user.posts
+
+  haml :'users/show'
+end
+
+get '/:user_id/sort/:order' do
+  @user = User[params[:user_id]]
+  @posts = @user.posts
+  
   haml :'users/show'
 end
 
 post '/posts' do
   title, content = params[:title], params[:content]
   user_id = params[:user_id]
-
-  puts '-'*100
-  puts params
-  puts '-'*100
-
-  
-
 
   post = Post.create(title: title, 
                      content: content, 
@@ -84,16 +58,8 @@ post '/posts' do
 
     @fullpath = File.expand_path(filename)
 
-    puts '-'*100
-    puts filename
-    puts @fullpath
-    puts '-'*100
-
     post.update(image: "/" + filename.sub('public/', ''))
   end
-
-  
-
 
   redirect "/posts/#{ post.id }"
 end
